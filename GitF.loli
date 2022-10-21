@@ -1,0 +1,77 @@
+[SETTINGS]
+{
+  "Name": "GitF",
+  "SuggestedBots": 10,
+  "MaxCPM": 0,
+  "LastModified": "2022-10-11T04:30:53.6601298+01:00",
+  "AdditionalInfo": "Git repository Finder pro version !*_*! Group: GreyH4tHackers | Channel: @GreyHatH4ckers | report template: www.hackerone.com/reports/248693",
+  "RequiredPlugins": [],
+  "Author": "l4gtr4",
+  "Version": "1.2.2",
+  "SaveEmptyCaptures": false,
+  "ContinueOnCustom": false,
+  "SaveHitsToTextFile": false,
+  "IgnoreResponseErrors": true,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "BanLoopEvasionOverride": -1,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "QuitOnBanRetry": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+BEGIN SCRIPT IronPython
+BANNER = ('''
+   ██╗ 
+██╗╚██╗
+╚═╝ ██║
+▄█╗ ██║
+▀═╝██╔╝
+   ╚═╝ Attack Started
+     ''')
+END SCRIPT -> VARS "BANNER"
+
+REQUEST GET "https://<URL>/wp-content/themes/.git/config" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+KEYCHECK 
+  KEYCHAIN Failure OR 
+    KEY "<SOURCE>" DoesNotContain "@github" 
+  KEYCHAIN Success OR 
+    KEY "@github" 
+  KEYCHAIN Custom "CUSTOM" OR 
+    KEY "<RESPONSECODE>" Contains "301" 
+    KEY "<RESPONSECODE>" Contains "302" 
+    KEY "<RESPONSECODE>" Contains "307" 
+  KEYCHAIN Retry OR 
+    KEY "Unable to connect to the" 
+
+BEGIN SCRIPT IronPython
+BANNER2 = ('''
+██╗     ██╗
+╚██╗   ██╔╝
+ ╚██╗ ██╔╝ 
+ ██╔╝ ╚██╗ 
+██╔╝██╗╚██╗
+╚═╝ ╚═╝ ╚═╝ Target Vulnerable
+     ''')
+END SCRIPT -> VARS "BANNER2"
+
